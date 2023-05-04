@@ -21,6 +21,7 @@ function CreateMessage(props){
                 .then(res => {
                     const image = res.data.newUrl;
                     const imageId = res.data.newId;
+                    const token = window.localStorage.getItem('token');
                     axios.post('/messages', { message: message, image: image, imageId: imageId, retweetId: props.retweet ? props.retweet.messageId : null }, { headers: { Authorization: `Bearer ${token}`} })
                         .then((res) => {
                             document.getElementById('createmessage-content').value = '';
@@ -56,7 +57,7 @@ function CreateMessage(props){
             { props.retweet && <div className='createmessage-retweet'><button className='createmessage-cancel' onClick={ (evt) => { props.setRetweet(null) } }><FaTimesCircle /></button>Partagez l'histoire de { props.retweet.author }</div>}
             <textarea id='createmessage-content' maxLength={ 280 } placeholder='Stimulez votre imagination, c&#39;est ici que votre histoire commence !' onChange={ (evt) => setMessage(evt.target.value) } onKeyDown={ (evt) => { handleCreateMessageKeys(evt) } } ></textarea>
             <div id='createmessage-buttons'>
-                <button className='createmessage-button'><input id='createmessage-image' type='file' accept='.png, .jpg, .jpeg, .gif'></input>AJOUTER UNE IMAGE</button>
+                <label className='createmessage-label'><input id='createmessage-image' type='file' accept='.png, .jpg, .jpeg, .gif'></input>AJOUTER UNE IMAGE</label>
                 <button className='createmessage-button' type='submit' onClick={ sendMessage }>PUBLIER</button>
             </div>
         </div>
